@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mini Games Stamp Rally - Sistem Informasi UKPM</title>
     <style>
-        /* --- RESET & TYPOGRAPHY --- */
         * {
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -36,7 +35,6 @@
             padding: 20px;
         }
 
-        /* --- CONTAINER UTAMA --- */
         .container {
             width: 100%;
             max-width: 440px;
@@ -49,21 +47,15 @@
             overflow: hidden;
         }
 
-        .container::top-bar {
+        .container::before {
             content: "";
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             height: 6px;
             background: linear-gradient(90deg, var(--navy-dark) 50%, var(--red-accent) 50%);
         }
 
-        /* --- HALAMAN SAMBUTAN --- */
-        .welcome-screen {
-            text-align: center;
-            padding: 10px 0;
-        }
+        .welcome-screen { text-align: center; padding: 10px 0; }
 
         .badge-header {
             display: inline-block;
@@ -78,28 +70,24 @@
             margin-bottom: 12px;
         }
 
-        .welcome-screen h1 {
-            color: var(--navy-dark);
-            font-size: 22px;
-            font-weight: 800;
-            margin-bottom: 6px;
-        }
+        .welcome-screen h1 { color: var(--navy-dark); font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+        .welcome-screen h2 { color: var(--red-accent); font-size: 14px; font-weight: 700; margin-bottom: 16px; }
+        .welcome-screen p { color: var(--navy-light); font-size: 13px; line-height: 1.6; margin-bottom: 20px; }
 
-        .welcome-screen h2 {
-            color: var(--red-accent);
+        .form-group { text-align: left; margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 700; color: var(--navy-dark); margin-bottom: 6px; }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
             font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 16px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.2s;
         }
+        .form-control:focus { border-color: var(--navy-dark); }
 
-        .welcome-screen p {
-            color: var(--navy-light);
-            font-size: 13px;
-            line-height: 1.6;
-            margin-bottom: 24px;
-        }
-
-        /* --- BUTTONS --- */
         .btn-primary {
             background: var(--navy-dark);
             color: #ffffff;
@@ -113,11 +101,7 @@
             transition: all 0.2s ease;
             box-shadow: 0 4px 6px rgba(15, 23, 42, 0.2);
         }
-
-        .btn-primary:hover {
-            background: var(--navy-main);
-            border-color: var(--navy-main);
-        }
+        .btn-primary:hover { background: var(--navy-main); border-color: var(--navy-main); }
 
         .btn-accent {
             background: var(--red-accent);
@@ -132,13 +116,22 @@
             transition: all 0.2s ease;
             box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2);
         }
+        .btn-accent:hover { background: var(--red-hover); border-color: var(--red-hover); }
 
-        .btn-accent:hover {
-            background: var(--red-hover);
-            border-color: var(--red-hover);
+        .participant-banner {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 12px;
+            color: var(--navy-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
+        .participant-banner span { font-weight: 700; color: var(--red-accent); }
 
-        /* --- PROGRESS BAR --- */
         .progress-bar {
             display: flex;
             justify-content: space-between;
@@ -148,44 +141,22 @@
         }
 
         .step {
-            width: 34px;
-            height: 34px;
+            width: 34px; height: 34px;
             border-radius: 50%;
             background: #ffffff;
             border: 2px solid var(--navy-light);
             color: var(--navy-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 13px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 13px;
             transition: all 0.2s ease;
         }
+        .step.active { background: var(--red-accent); border-color: var(--red-accent); color: #ffffff; transform: scale(1.1); }
+        .step.completed { background: var(--navy-dark); border-color: var(--navy-dark); color: #ffffff; }
 
-        .step.active {
-            background: var(--red-accent);
-            border-color: var(--red-accent);
-            color: #ffffff;
-            transform: scale(1.1);
-        }
-
-        .step.completed {
-            background: var(--navy-dark);
-            border-color: var(--navy-dark);
-            color: #ffffff;
-        }
-
-        /* --- KARTU SOAL & VERIFIKASI --- */
-        .card-header {
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--navy-dark);
-            margin-bottom: 6px;
-        }
+        .card-header { font-size: 18px; font-weight: 800; color: var(--navy-dark); margin-bottom: 6px; }
 
         .location-badge {
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 12px; font-weight: 600;
             color: var(--red-accent);
             background: var(--red-light);
             border: 1px solid #fecaca;
@@ -206,35 +177,28 @@
             line-height: 1.5;
         }
 
-        .question-text {
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: var(--navy-dark);
-        }
+        .question-text { font-size: 14px; font-weight: 700; margin-bottom: 12px; color: var(--navy-dark); }
 
-        /* --- TOMBOL JAWABAN --- */
-        .btn-option {
+        /* --- INPUT JAWABAN KETIK --- */
+        .answer-input-group { margin-bottom: 10px; }
+        .answer-input {
             width: 100%;
-            text-align: left;
             padding: 12px 14px;
-            margin-bottom: 8px;
-            border: 2px solid #e2e8f0;
+            font-size: 14px;
+            border: 2px solid #cbd5e1;
             border-radius: 8px;
-            background: #ffffff;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--navy-dark);
-            transition: all 0.15s ease;
+            outline: none;
+            margin-bottom: 10px;
+            transition: border-color 0.2s;
+        }
+        .answer-input:focus { border-color: var(--navy-dark); }
+        .answer-input.wrong-shake { border-color: var(--red-accent); animation: shake 0.3s; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
         }
 
-        .btn-option:hover {
-            border-color: var(--navy-dark);
-            background: #f8fafc;
-        }
-
-        /* --- NOTIFIKASI VERIFIKASI (HIGHLIGHT RED & NAVY) --- */
         .verified-card {
             border: 2px solid var(--red-accent);
             background: var(--red-light);
@@ -243,61 +207,25 @@
             text-align: center;
             margin-bottom: 20px;
         }
-
         .check-circle {
-            width: 44px;
-            height: 44px;
+            width: 44px; height: 44px;
             background: var(--red-accent);
             color: #ffffff;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; font-weight: 800;
             margin: 0 auto 10px auto;
             box-shadow: 0 4px 8px rgba(220, 38, 38, 0.3);
         }
+        .verified-card h3 { color: var(--red-accent); font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+        .verified-card p { font-size: 12.5px; color: var(--navy-dark); font-weight: 600; }
 
-        .verified-card h3 {
-            color: var(--red-accent);
-            font-size: 16px;
-            font-weight: 800;
-            margin-bottom: 4px;
-        }
+        .stamp-validation { text-align: center; margin-top: 16px; }
 
-        .verified-card p {
-            font-size: 12.5px;
-            color: var(--navy-dark);
-            font-weight: 600;
-        }
+        .status-msg { margin-top: 10px; font-size: 12px; text-align: center; color: var(--red-accent); font-weight: 700; }
 
-        /* --- VALIDASI STEMPEL --- */
-        .stamp-validation {
-            text-align: center;
-            margin-top: 16px;
-        }
-
-        /* --- STATUS & REWARD --- */
-        .status-msg {
-            margin-top: 10px;
-            font-size: 12px;
-            text-align: center;
-            color: var(--red-accent);
-            font-weight: 700;
-        }
-
-        .reward-box {
-            text-align: center;
-            padding: 10px 0;
-        }
-
-        .reward-box h2 {
-            color: var(--navy-dark);
-            font-size: 20px;
-            font-weight: 800;
-            margin-bottom: 12px;
-        }
+        .reward-box { text-align: center; padding: 10px 0; }
+        .reward-box h2 { color: var(--navy-dark); font-size: 20px; font-weight: 800; margin-bottom: 12px; }
 
         .reward-highlight {
             background: var(--red-light);
@@ -306,12 +234,7 @@
             border-radius: 10px;
             margin-top: 14px;
         }
-
-        .reward-highlight p {
-            color: var(--red-accent);
-            font-weight: 700;
-            font-size: 13px;
-        }
+        .reward-highlight p { color: var(--red-accent); font-weight: 700; font-size: 13px; }
 
         .reset-btn {
             background: transparent;
@@ -324,73 +247,76 @@
             text-decoration: underline;
             width: 100%;
         }
-
-        .reset-btn:hover {
-            color: var(--red-accent);
-        }
+        .reset-btn:hover { color: var(--red-accent); }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- 1. HALAMAN SAMBUTAN -->
     <div id="welcomeScreen" class="welcome-screen">
         <span class="badge-header">Stamp Rally</span>
         <h1>✨ Selamat Datang ✨</h1>
         <h2>Pameran Prodi Sistem Informasi UKPM</h2>
-        <p>Silakan ikuti Stamp Rally ini. Kunjungi setiap stand prodi, jawab pertanyaan verifikasi, dan kumpulkan stempel fisik untuk klaim reward menarik.</p>
-        <button class="btn-primary" onclick="startGame()">Mulai Stamp Rally 🚀</button>
+        <p>Silakan isi nama kamu terlebih dahulu untuk memulai petualangan Stamp Rally!</p>
+
+        <form onsubmit="startGame(event)">
+            <div class="form-group">
+                <label for="playerName">Nama Lengkap Peserta:</label>
+                <input type="text" id="playerName" class="form-control" placeholder="Contoh: Tiar Aditya" required>
+            </div>
+            <button type="submit" class="btn-primary">Mulai Stamp Rally 🚀</button>
+        </form>
     </div>
 
-    <!-- 2. GAMEPLAY PER-HALAMAN -->
     <div id="gameScreen" style="display: none;">
+        <div class="participant-banner">
+            <div>Peserta: <span id="displayName"></span></div>
+        </div>
         <div class="progress-bar" id="progressBar"></div>
         <div id="pageContent"></div>
         <button class="reset-btn" onclick="resetProgress()">Ulangi Dari Awal</button>
     </div>
 
-    <!-- 3. HALAMAN REWARD / SELESAI -->
     <div id="rewardBox" class="reward-box" style="display: none;">
         <span class="badge-header" style="background: var(--navy-dark);">Selesai</span>
-        <h2>🎉 Terima Kasih! 🎉</h2>
+        <h2>🎉 Selamat, <span id="rewardName"></span>! 🎉</h2>
         <p style="color: var(--navy-light); font-size: 13px; line-height: 1.6;">Seluruh stempel verifikasi telah berhasil kamu kumpulkan.</p>
-        
+
         <div class="reward-highlight">
-            <p> Silakan tunjukkan kartu stempel fisik milikmu ke petugas di Stand Utama untuk mengambil reward kamu.</p>
+            <p>Silakan tunjukkan kartu stempel fisik milikmu ke petugas di Stand Utama untuk mengambil e-sertifikat kamu.</p>
         </div>
 
-        <button class="btn-primary" style="margin-top: 20px;" onclick="resetProgress()">Reset Sesi</button>
+        <button class="btn-accent" style="margin-top: 20px;" onclick="goToCertificate()">Ambil E-Sertifikat 🎓</button>
+        <button class="btn-primary" style="margin-top: 10px;" onclick="resetProgress()">Reset Sesi</button>
     </div>
 </div>
 
 <script>
+    // Setiap soal punya `answer`: jawaban yang benar (bisa lebih dari satu variasi via array acceptedAnswers)
     const stands = [
         {
             id: 1,
-            name: "Stand 1: Sistem Informasi",
-            location: "Stand A1 (Samping Pintu Masuk Aula)",
-            instruction: "Misi: Datangi Stand A1, simak penjelasan dari penjaga stand, dan jawab pertanyaannya.",
-            question: "Apa fokus utama dari program studi Sistem Informasi?",
-            options: ["Hanya perbaikan perangkat keras komputer", "Integrasi teknologi informasi dengan kebutuhan bisnis", "Perancangan bangunan fisik", "Teknik mesin otomotif"],
-            correct: 1
+            name: "Stand 1: Prodi Sistem Informasi",
+            location: "Samping kiri panggung bagian ujung, Fakultas Sains & Teknologi",
+            instruction: "Misi: Datangi Stand Prodi Sistem Informasi, simak penjelasan dari penjaga stand, dan jawab pertanyaannya.",
+            question: "Pada website CocaCola yang dijelaskan, pengembangan web apa saja yang digunakan? (jawab singkat, contoh: satu/dua kata kunci)",
+            acceptedAnswers: [ "HTML dan CSS"]
         },
         {
             id: 2,
-            name: "Stand 2: Teknik Informatika",
-            location: "Stand A2 (Sebelah Stand Sistem Informasi)",
-            instruction: "Misi: Datangi Stand A2, simak penjelasan dari penjaga stand, dan jawab pertanyaannya.",
-            question: "Bahasa pemrograman yang sering digunakan untuk AI/Data Science adalah...",
-            options: ["HTML", "Python", "CSS", "Photoshop"],
-            correct: 1
+            name: "Stand 2: Pendidikan IPA",
+            location: "Stand A2 (Di Stand yang sama dengan prodi Sistem Informasi)",
+            instruction: "Misi: Datangi Stand A2, beli salah satu produk yang dijual, dan fotobooth.",
+            question: "Produk UMKM apa yang kamu beli...",
+            acceptedAnswers: ["abon ikan", "keripik pisang", "kacang goreng", "sambal bandeng"]
         },
         {
             id: 3,
-            name: "Stand 3: Manajemen",
-            location: "Stand B1 (Barisan Tengah Lapangan)",
+            name: "Stand 3: Fakultas Vokasi",
+            location: "Stand 3 (Samping stand Prodi Sistem Informasi)",
             instruction: "Misi: Tanyakan 4 fungsi dasar manajemen di Stand B1.",
             question: "Fungsi dasar manajemen pertama yang dilakukan adalah...",
-            options: ["Planning (Perencanaan)", "Organizing", "Controlling", "Evaluating"],
-            correct: 0
+            acceptedAnswers: ["planning", "perencanaan"]
         },
         {
             id: 4,
@@ -398,8 +324,7 @@
             location: "Stand B2 (Samping Stand Manajemen)",
             instruction: "Misi: Tanyakan jenis laporan posisi keuangan di Stand B2.",
             question: "Laporan yang menunjukkan posisi Aset = Liabilitas + Ekuitas disebut...",
-            options: ["Laporan Laba Rugi", "Neraca (Balance Sheet)", "Catatan Otomotif", "Jurnal Kas"],
-            correct: 1
+            acceptedAnswers: ["neraca", "balance sheet", "neraca keuangan"]
         },
         {
             id: 5,
@@ -407,8 +332,7 @@
             location: "Stand C1 (Area Pojok Kreatif)",
             instruction: "Misi: Tanyakan elemen tata letak visual di Stand C1.",
             question: "Istilah tata letak visual untuk mengarahkan pandangan mata adalah...",
-            options: ["Hirarki Visual", "Audio Mixing", "Resolusi RAM", "Algoritma"],
-            correct: 0
+            acceptedAnswers: ["hirarki visual", "hierarki visual", "visual hierarchy"]
         },
         {
             id: 6,
@@ -416,24 +340,35 @@
             location: "Stand C2 (Samping Panggung Utama)",
             instruction: "Misi: Tanya panitia Stand C2 mengenai asas perundang-undangan.",
             question: "Asas hukum yang menyatakan undang-undang tidak berlaku surut adalah...",
-            options: ["Asas Legalitas", "Asas Presumsi", "Asas Demokrasi", "Asas Otonomi"],
-            correct: 0
+            acceptedAnswers: ["asas legalitas", "legalitas"]
         }
     ];
 
-    let currentStep = parseInt(localStorage.getItem('rally_step')) || 0; 
+    let currentStep = parseInt(localStorage.getItem('rally_step')) || 0;
     let isAnswered = localStorage.getItem('rally_answered') === 'true';
+    let playerName = localStorage.getItem('rally_player_name') || '';
+
+    // Normalisasi teks: lowercase, trim, hapus spasi berlebih & tanda baca ringan
+    function normalize(str) {
+        return str
+            .toLowerCase()
+            .trim()
+            .replace(/[.,!?]/g, '')
+            .replace(/\s+/g, ' ');
+    }
 
     function checkInitialState() {
         if (currentStep > 0 && currentStep <= stands.length) {
             document.getElementById('welcomeScreen').style.display = 'none';
             document.getElementById('gameScreen').style.display = 'block';
             document.getElementById('rewardBox').style.display = 'none';
+            document.getElementById('displayName').innerText = playerName;
             renderPage();
         } else if (currentStep > stands.length) {
             document.getElementById('welcomeScreen').style.display = 'none';
             document.getElementById('gameScreen').style.display = 'none';
             document.getElementById('rewardBox').style.display = 'block';
+            document.getElementById('rewardName').innerText = playerName;
         } else {
             document.getElementById('welcomeScreen').style.display = 'block';
             document.getElementById('gameScreen').style.display = 'none';
@@ -441,18 +376,26 @@
         }
     }
 
-    function startGame() {
+    function startGame(e) {
+        e.preventDefault();
+        const inputName = document.getElementById('playerName').value.trim();
+        if (!inputName) return;
+
+        playerName = inputName;
         currentStep = 1;
         isAnswered = false;
+
+        localStorage.setItem('rally_player_name', playerName);
         localStorage.setItem('rally_step', 1);
         localStorage.setItem('rally_answered', 'false');
+
         checkInitialState();
     }
 
     function renderPage() {
         const pageContent = document.getElementById('pageContent');
         const progressBar = document.getElementById('progressBar');
-        
+
         pageContent.innerHTML = '';
         progressBar.innerHTML = '';
 
@@ -466,12 +409,12 @@
         if (currentStep > stands.length) {
             document.getElementById('gameScreen').style.display = 'none';
             document.getElementById('rewardBox').style.display = 'block';
+            document.getElementById('rewardName').innerText = playerName;
             return;
         }
 
         const currentStand = stands[currentStep - 1];
         const page = document.createElement('div');
-
         let html = '';
 
         if (isAnswered) {
@@ -493,18 +436,16 @@
         if (!isAnswered) {
             html += `
                 <div class="question-text">Soal: ${currentStand.question}</div>
-                <div>
+                <div class="answer-input-group">
+                    <input type="text" id="answerInput" class="answer-input" placeholder="Ketik jawaban kamu di sini..." autocomplete="off">
+                    <button class="btn-primary" onclick="checkAnswer()">Kirim Jawaban</button>
+                </div>
+                <div class="status-msg" id="statusMsg"></div>
             `;
-            currentStand.options.forEach((opt, optIdx) => {
-                html += `<button class="btn-option" onclick="checkAnswer(${optIdx})">${opt}</button>`;
-            });
-            html += `</div><div class="status-msg" id="statusMsg"></div>`;
         } else {
-            // Logika conditional tombol navigasi (Khusus Stand 6 langsung ke Terima Kasih)
             const isLastStand = currentStep === stands.length;
-            const btnText = isLastStand ? "Klaim Reward & Selesai 🎉" : "Lanjut ke Stand Berikutnya →";
+            const btnText = isLastStand ? "Selesai & Ambil E-Sertifikat 🎉" : "Lanjut ke Stand Berikutnya →";
             const btnClass = isLastStand ? "btn-accent" : "btn-primary";
-
             html += `
                 <div class="stamp-validation">
                     <button class="${btnClass}" onclick="nextPage()">${btnText}</button>
@@ -514,20 +455,41 @@
 
         page.innerHTML = html;
         pageContent.appendChild(page);
+
+        // Fokus otomatis ke input & submit dengan tombol Enter
+        const inputEl = document.getElementById('answerInput');
+        if (inputEl) {
+            inputEl.focus();
+            inputEl.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    checkAnswer();
+                }
+            });
+        }
     }
 
-    function checkAnswer(selectedIdx) {
+    function checkAnswer() {
         const currentStand = stands[currentStep - 1];
         const statusMsg = document.getElementById('statusMsg');
+        const inputEl = document.getElementById('answerInput');
+        const userAnswer = normalize(inputEl.value);
 
-        if (selectedIdx === currentStand.correct) {
+        if (!userAnswer) {
+            statusMsg.innerText = "Jawaban tidak boleh kosong.";
+            return;
+        }
+
+        const isCorrect = currentStand.acceptedAnswers.some(ans => normalize(ans) === userAnswer);
+
+        if (isCorrect) {
             isAnswered = true;
             localStorage.setItem('rally_answered', 'true');
             renderPage();
         } else {
-            if(statusMsg) {
-                statusMsg.innerText = "Jawaban belum tepat. Diskusikan kembali dengan panitia di stand ya!";
-            }
+            statusMsg.innerText = "Jawaban belum tepat. Diskusikan kembali dengan panitia di stand ya!";
+            inputEl.classList.add('wrong-shake');
+            setTimeout(() => inputEl.classList.remove('wrong-shake'), 300);
         }
     }
 
@@ -536,7 +498,7 @@
         isAnswered = false;
         localStorage.setItem('rally_step', currentStep);
         localStorage.setItem('rally_answered', 'false');
-        
+
         if (currentStep > stands.length) {
             checkInitialState();
         } else {
@@ -544,12 +506,21 @@
         }
     }
 
+    function goToCertificate() {
+        // Nama dikirim lewat localStorage (dibaca sertifikat.html) sekaligus URL parameter sebagai cadangan
+        localStorage.setItem('rally_name', playerName);
+        window.location.href = `sertifikat mini games.html?name=${encodeURIComponent(playerName)}`;
+    }
+
     function resetProgress() {
-        if (confirm("Apakah Anda yakin ingin mengulang dari awal?")) {
+        if (confirm("Apakah Anda yakin ingin mengulang dari awal? Data nama dan progress akan dihapus.")) {
             localStorage.removeItem('rally_step');
             localStorage.removeItem('rally_answered');
+            localStorage.removeItem('rally_player_name');
             currentStep = 0;
             isAnswered = false;
+            playerName = '';
+            document.getElementById('playerName').value = '';
             checkInitialState();
         }
     }
