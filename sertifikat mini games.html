@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Sertifikat - Mini Games Stamp Rally</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #0f172a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .control-bar { margin-bottom: 20px; display: flex; gap: 12px; }
+
+        .btn-download {
+            background: #dc2626;
+            color: #ffffff;
+            border: none;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+            transition: background 0.2s ease;
+        }
+        .btn-download:hover { background: #b91c1c; }
+        .btn-download:disabled { background: #94a3b8; cursor: not-allowed; box-shadow: none; }
+
+        #certificate {
+            width: 1123px;
+            height: 794px;
+            background: #ffffff;
+            position: relative;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+
+        .cert-outer-border {
+            border: 10px solid #0f172a;
+            height: 100%;
+            position: relative;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .cert-inner-border {
+            position: absolute;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            border: 2px solid #dc2626;
+            pointer-events: none;
+        }
+
+        .header-logo { font-size: 14px; font-weight: 800; color: #dc2626; letter-spacing: 2px; text-transform: uppercase; }
+        .cert-title { font-size: 42px; font-weight: 900; color: #0f172a; text-transform: uppercase; letter-spacing: 4px; margin-top: 10px; }
+        .cert-subtitle { font-size: 18px; font-weight: 600; color: #475569; margin-top: 5px; }
+
+        .cert-recipient { text-align: center; margin: 20px 0; }
+        .given-text { font-size: 16px; color: #64748b; font-style: italic; margin-bottom: 15px; }
+        .participant-name {
+            font-size: 44px; font-weight: 800; color: #0f172a;
+            border-bottom: 3px solid #dc2626;
+            padding-bottom: 8px;
+            display: inline-block;
+            min-width: 400px;
+        }
+
+        .cert-description { font-size: 16px; color: #334155; max-width: 750px; text-align: center; line-height: 1.6; }
+
+        .cert-footer {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+        }
+
+        .signature-box { text-align: center; width: 200px; }
+        .signature-line { border-bottom: 1.5px solid #0f172a; margin-bottom: 6px; height: 40px; }
+        .signature-title { font-size: 13px; font-weight: 700; color: #0f172a; }
+        .signature-sub { font-size: 11px; color: #64748b; }
+
+        /* Logo stamp menggantikan badge teks, ditempatkan di footer kanan */
+        .stamp-logo-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 140px;
+        }
+        .stamp-logo-wrap img {
+            width: 110px;
+            height: 110px;
+            object-fit: contain;
+        }
+        .stamp-logo-caption {
+            font-size: 10px;
+            font-weight: 700;
+            color: #dc2626;
+            letter-spacing: 1px;
+            margin-top: 4px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="control-bar">
+        <button class="btn-download" id="downloadBtn" onclick="downloadPDF()">📄 Unduh PDF Sertifikat</button>
+    </div>
+
+    <div id="certificate">
+        <div class="cert-outer-border">
+            <div class="cert-inner-border"></div>
+
+            <div style="text-align: center; margin-top: 10px;">
+                <div class="header-logo">Sistem Informasi UKPM</div>
+                <div class="cert-title">Sertifikat Penghargaan</div>
+                <div class="cert-subtitle">Stamp Rally Pameran Prodi</div>
+            </div>
+
+            <div class="cert-recipient">
+                <div class="given-text">Sertifikat ini secara resmi diberikan kepada:</div>
+                <div class="participant-name" id="nameTarget">Nama Peserta</div>
+            </div>
+
+            <div class="cert-description">
+                Atas partisipasinya sebagai peserta aktif yang telah berhasil mengunjungi stand prodi dan menyelesaikan seluruh verifikasi pertanyaan pada mini games <strong>Stamp Rally</strong>.
+            </div>
+
+            <div class="cert-footer">
+                <div class="signature-box">
+                    <div class="signature-line"></div>
+                    <div class="signature-title">Seluruh Penyelenggara Stamp Rally</div>
+                </div>
+
+                <div class="stamp-logo-wrap">
+                    <img src="STAMP MINI GAME PAMERAN.png" alt="Stamp Rally Approved">
+                    <div class="stamp-logo-caption">OFFICIAL VERIFIED</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlName = urlParams.get('name');
+        // Cek dua kemungkinan key localStorage (kompatibel dengan game.html)
+        const localName = localStorage.getItem('rally_name') || localStorage.getItem('rally_player_name');
+
+        const finalName = urlName || localName || "Nama Peserta";
+        document.getElementById('nameTarget').innerText = finalName;
+    });
+
+    function downloadPDF() {
+        const element = document.getElementById('certificate');
+        const name = document.getElementById('nameTarget').innerText;
+        const btn = document.getElementById('downloadBtn');
+
+        btn.disabled = true;
+        btn.innerText = 'Sedang memproses...';
+
+        const options = {
+            margin:       0,
+            filename:     `E-Sertifikat_${name.replace(/\s+/g, '_')}.pdf`,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true },
+            jsPDF:        { unit: 'px', format: [1123, 794], orientation: 'landscape' }
+        };
+
+        html2pdf().set(options).from(element).save().then(() => {
+            btn.disabled = false;
+            btn.innerText = '📄 Unduh PDF Sertifikat';
+        });
+    }
+</script>
+
+</body>
+</html>
